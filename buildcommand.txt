@@ -1,0 +1,4 @@
+ cmake -S . -B build `
+>>   -DCMAKE_TOOLCHAIN_FILE=C:/Users/User/Documents/prototypes/SplenderProof/vcpkg/scripts/buildsystems/vcpkg.cmake `
+>>   -DVCPKG_TARGET_TRIPLET=x64-windows
+>> cmake --build build --config Debug

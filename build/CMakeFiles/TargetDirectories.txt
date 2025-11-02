@@ -1,0 +1,3 @@
+C:/Users/User/Documents/prototypes/SplenderProof/build/CMakeFiles/splender_gl.dir
+C:/Users/User/Documents/prototypes/SplenderProof/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/User/Documents/prototypes/SplenderProof/build/CMakeFiles/ZERO_CHECK.dir
