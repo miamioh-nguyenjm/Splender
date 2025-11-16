@@ -1,0 +1,28 @@
+1 ICON "@APP_ICON@"
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,0
+ PRODUCTVERSION 1,0,0,0
+ FILEFLAGSMASK 0x3fL
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904b0"
+    BEGIN
+      VALUE "CompanyName",     "Your Company\0"
+      VALUE "FileDescription", "Splender\0"
+      VALUE "ProductName",     "Splender\0"
+      VALUE "InternalName",    "Splender.exe\0"
+      VALUE "OriginalFilename","Splender.exe\0"
+      VALUE "FileVersion",     "1.0.0.0\0"
+      VALUE "ProductVersion",  "1.0.0.0\0"
+      VALUE "LegalCopyright",  "Copyright (c) 2025 Your Company\0"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x0409, 1200
+  END
+END
