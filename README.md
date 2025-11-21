@@ -5,4 +5,4 @@ How to install:
 4. Run splender_gl.exe
 
 <img width="256" height="256" alt="splender_logo_small" src="https://github.com/user-attachments/assets/02c1fd06-7c2f-4a48-a293-8b0196e7de6a" />
-![keith_small](https://github.com/user-attachments/assets/0b530297-1903-42ed-b376-7149a31cfba6)
+<img width="200" height="111" alt="keith" src="https://github.com/user-attachments/assets/0b530297-1903-42ed-b376-7149a31cfba6" />
