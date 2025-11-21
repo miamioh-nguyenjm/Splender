@@ -24,14 +24,14 @@ BEGIN
     BEGIN
         BLOCK "040904B0"
         BEGIN
-            VALUE "CompanyName",      "Your Company\0"
+            VALUE "CompanyName",      "Ardent Technologies\0"
             VALUE "FileDescription",   "Splender\0"
-            VALUE "FileVersion",       "1.0.0.0\0"
+            VALUE "FileVersion",       "0.4.2\0"
             VALUE "InternalName",      "Splender.exe\0"
             VALUE "OriginalFilename",  "Splender.exe\0"
             VALUE "ProductName",       "Splender\0"
-            VALUE "ProductVersion",    "1.0.0.0\0"
-            VALUE "LegalCopyright",    "Copyright (c) 2025 Your Company\0"
+            VALUE "ProductVersion",    "0.4.2\0"
+            VALUE "LegalCopyright",    "Copyright (c) 2025 Ardent Technologies\0"
         END
     END
     BLOCK "VarFileInfo"

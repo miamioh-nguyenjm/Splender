@@ -7,16 +7,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(SPLENDER_IMGUI_DEMO "Compile imgui_demo.cpp into imgui static lib" ON)
 
-# Find dependencies (assumes you provide a toolchain/vcpkg externally if required)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glad CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(OpenGL REQUIRED)
 
+find_package(assimp CONFIG)
+# If the CONFIG mode fails for some setups, also try the module mode fallback
+if(NOT assimp_FOUND)
+    find_package(assimp)
+endif()
+
 # Ensure don't pull in GLFW's legacy headers via include order in sources
 add_compile_definitions(GLFW_INCLUDE_NONE)
 
-# ImGui location (expected in repository at third_party/imgui)
+# ImGui location (expected in repository at third_party/imgui)..
 set(IMGUI_DIR "${CMAKE_SOURCE_DIR}/third_party/imgui")
 if (NOT EXISTS "${IMGUI_DIR}")
     message(FATAL_ERROR "ImGui not found at ${IMGUI_DIR}. Place ImGui under third_party/imgui")
@@ -54,6 +59,7 @@ set(PROJECT_CORE_SOURCES
     src/ui.cpp
     src/globals.cpp
     src/app.cpp
+    src/usersettings.cpp
 )
 
 add_library(splender_core STATIC ${PROJECT_CORE_SOURCES})
@@ -71,6 +77,14 @@ target_link_libraries(splender_core
         glm::glm
 )
 
+if(assimp_FOUND)
+    message(STATUS "Assimp found: enabling Assimp support")
+    target_compile_definitions(splender_core PUBLIC USE_ASSIMP)
+    target_link_libraries(splender_core PUBLIC assimp::assimp)
+else()
+    message(STATUS "Assimp not found: building without Assimp support (OBJ-only loader will be used)")
+endif()
+
 # -------------------------
 # Application / executable
 # -------------------------
@@ -79,7 +93,6 @@ if (NOT EXISTS "${CMAKE_SOURCE_DIR}/${SPLENDER_MAIN_SRC}")
     message(FATAL_ERROR "Main source not found: ${SPLENDER_MAIN_SRC}")
 endif()
 
-# Resolve absolute icon path in source tree (adjust filename if different)
 set(APP_ICON "${CMAKE_SOURCE_DIR}/assets/icons/splender_logo.ico")
 if (NOT EXISTS "${APP_ICON}")
     message(FATAL_ERROR "Icon not found: ${APP_ICON}")
@@ -88,7 +101,6 @@ endif()
 # Ensure output dir exists for generated RC
 file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/resources")
 
-# Configure RC: substitute @APP_ICON@ in resources/app.rc.in -> build/resources/app.rc
 configure_file(
     "${CMAKE_SOURCE_DIR}/resources/app.rc.in"
     "${CMAKE_BINARY_DIR}/resources/app.rc"
@@ -112,6 +124,11 @@ target_link_libraries(splender_gl
         glm::glm
         OpenGL::GL
 )
+
+# Link Assimp into the executable as well if available
+if(assimp_FOUND)
+    target_link_libraries(splender_gl PRIVATE assimp::assimp)
+endif()
 
 # Compiler warnings and flags
 if (MSVC)

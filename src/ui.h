@@ -1,72 +1,47 @@
 #pragma once
 
-// ui.h
-
 #include <string>
 #include <functional>
 #include <memory>
 #include <atomic>
+#include <future>
+#include <vector>
 
 #include <glm/glm.hpp>
-
-#include "globals.h" // provides extern std::atomic<bool> isLoading;
-
-
 #include <GLFW/glfw3.h>
+
+#include "globals.h"
+#include "usersettings.h"
 
 bool Ui_Init(GLFWwindow* window, const char* glsl_version = "#version 330");
 void Ui_Shutdown();
 void Ui_NewFrame();
 void Ui_Render();
 
-
-
-struct ImportRequest {
-    std::string path;
-    // progress is optional: worker can update a shared atomic<float>
-    std::shared_ptr<std::atomic<float>> progress;
+// Import state references used by UI to hand imported buffers back to the app
+struct ImportStateRefs {
+    std::future<void>* importLoaderFuture = nullptr;
+    std::shared_ptr<std::vector<glm::vec3>>* import_positions_ptr = nullptr;
+    std::shared_ptr<std::vector<glm::vec3>>* import_normals_ptr = nullptr;
+    std::shared_ptr<std::vector<unsigned int>>* import_indices_ptr = nullptr;
+    std::shared_ptr<std::atomic<bool>>* import_ready = nullptr;
+    std::shared_ptr<std::atomic<bool>>* import_failed = nullptr;
+    std::shared_ptr<std::atomic<float>>* import_progress = nullptr;
 };
 
-class UI {
-public:
-    // Callback signature to request an import from UI (runs on main thread).
-    // Implementer typically starts an async worker that fills model buffers.
-    using ImportCallback = std::function<void(const ImportRequest&)>;
+// Ui_FrameDraw: draw all UI elements for the frame, mutating app view state via references
+void Ui_FrameDraw(GLFWwindow* win,
+                  const std::atomic<float>& loadProgress,
+                  const std::shared_ptr<std::atomic<float>>& import_progress_ptr,
+                  ImportStateRefs& importRefs,
+                  glm::vec3& lightDir,
+                  float& lightIntensity,
+                  glm::vec3& lightColor,
+                  bool& staticShadows,
+                  bool* showWireframe,
+                  UserSettings& userSettings,
+                  size_t vertexCount,
+                  size_t triCount);
 
-    UI();
-    ~UI();
-
-    // Initialize ImGui context / backend. Must be called on the main thread after GL context is current.
-    bool init(void* nativeWindowHandle, const char* glsl_version = "#version 330");
-
-    // Shutdown ImGui and release UI resources.
-    void shutdown();
-
-    // Frame lifecycle: call at beginning of frame (new ImGui frame) and at end (render).
-    void newFrame();
-    void render();
-
-    // Build the app main menu bar. Non-blocking. Supply ImportCallback to run when user chooses a file.
-    // The implementation should disable menu actions while isLoading->load() == true.
-    void buildMainMenu(const ImportCallback& importCb);
-
-    // Show a centered modal loading overlay with a progress bar.
-    // - progress: 0.0..1.0. If <0 then show indeterminate/spinner text.
-    void showLoadingModal(float progress);
-
-    // Helper to render a small status bar area (frame-rate, model name, etc.)
-    void drawStatusBar(const std::string& statusText);
-
-    // Returns whether ImGui is capturing mouse/keyboard (useful to short-circuit app input)
-    bool wantsCaptureMouse() const;
-    bool wantsCaptureKeyboard() const;
-
-    // Non-copyable
-    UI(const UI&) = delete;
-    UI& operator=(const UI&) = delete;
-
-private:
-    struct Impl;
-    Impl* impl_ = nullptr;
-};
-
+bool Ui_WantsCaptureMouse();
+bool Ui_WantsCaptureKeyboard();
