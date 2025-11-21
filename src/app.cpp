@@ -143,7 +143,7 @@ struct App::Impl {
         if (!glfwInit()) return false;
         glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
         glfwWindowHint(GLFW_SAMPLES, 16);
-        window = glfwCreateWindow(1280, 720, "Splender 0.4.2", nullptr, nullptr);
+        window = glfwCreateWindow(1280, 720, "Splender 0.4.7", nullptr, nullptr);
         if (!window) { glfwTerminate(); return false; }
 
         std::string exeDir;

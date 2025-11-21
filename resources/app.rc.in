@@ -16,8 +16,8 @@ BEGIN
       VALUE "ProductName",     "Splender\0"
       VALUE "InternalName",    "Splender.exe\0"
       VALUE "OriginalFilename","Splender.exe\0"
-      VALUE "FileVersion",     "0.4.2\0"
-      VALUE "ProductVersion",  "0.4.2\0"
+      VALUE "FileVersion",     "0.4.7\0"
+      VALUE "ProductVersion",  "0.4.7\0"
       VALUE "LegalCopyright",  "Copyright (c) 2025 Ardent Technologies\0"
     END
   END
